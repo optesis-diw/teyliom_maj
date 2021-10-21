@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!--
+    
+     <data noupdate="1">
+       <Record id="email_template_for_notification" model="mail.template">
+            <field name="name"> Card: Send by email</field>
+           <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="email_from">${object.email_apporteur.email |safe}</field>
+            <field name="subject">Card (Ref ${object.name})</field>
+            <field name="body_html" type="html">
+               <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;"></p>
+
+				Dear  ${object.partner_id.name},
+				<br /><br />
+				We wanted to let you know that you invoice <strong>${object.name}</strong> is due today, <strong>${object.date_expiration}</strong>.
+				<br /><br />
+				Invoice : <strong>${object.name}</strong><br />
+				Invoice by : <strong>${object.user_id.name}</strong><br />
+				
+				Feel free to contact us if you have any question.<br /><br /> 
+				
+				% if object.partner_id.company_id:
+				Best regards,<br />
+				from <strong>${object.partner_id.company_id.name | safe}
+				</strong>
+				% endif
+	     	  </div>
+           </field>
+        </record>
+    </data>
+-->
+    
+   <record id="email_template_invoice_due_remainder" model="mail.template">
+	<field name="name">Invoice Due Date Remainder</field>
+	<field name="model_id" ref="crm.model_crm_lead"/>
+	<field name="body_html" type="html">
+		<div style="margin: 0px; padding: 0px;">
+			<p style="margin: 0px; padding: 0px; font-size: 13px;"></p>
+
+				Dear  ${object.partner_id.name},
+				<br /><br />
+				We wanted to let you know that you invoice <strong>${object.name}</strong> is due today, <strong>${object.date_expiration}</strong>.
+				<br /><br />
+				Invoice : <strong>${object.name}</strong><br />
+				Invoice by : <strong>${object.user_id.name}</strong><br />
+				
+				Feel free to contact us if you have any question.<br /><br /> 
+				
+				% if object.partner_id.company_id:
+				Best regards,<br />
+				from <strong>${object.partner_id.company_id.name | safe}
+				</strong>
+				% endif
+		</div>
+	</field>
+</record> 
+
+    
+<record id="email_template_invoice_before_due_remainder" model="mail.template">
+	<field name="name">Invoice Before Due Date Remainder</field>
+	<field name="model_id" ref="crm.model_crm_lead"/>
+	<field name="body_html" type="html">
+		<div style="margin: 0px; padding: 0px;">
+			<p style="margin: 0px; padding: 0px; font-size: 13px;"></p>
+
+				Dear  ${object.user_id.name},
+				<br /><br />
+				We wanted to let you know that you invoice <strong>${object.name}</strong> is due date is close, <strong>${object.date_expiration}</strong>.
+				<br /><br />
+				Invoice : <strong>${object.name}</strong><br />
+				Invoice by : <strong>${object.user_id.name}</strong><br />
+				
+				
+				Feel free to contact us if you have any question.<br /><br /> 
+
+				% if object.partner_id.company_id:
+				Best regards,<br />
+				from <strong>${object.partner_id.company_id.name | safe}
+				</strong>
+				% endif
+		</div>
+	</field>
+</record> 
+        
+</odoo>
+

@@ -1,0 +1,18 @@
+
+# -*- coding: utf-8 -*-
+
+from odoo import api, fields, models, tools, _
+
+
+class potenciel(models.Model):
+    _inherit = 'res.partner'
+    
+    statut_contact  = fields.Selection(
+        [('client', 'Est Un Client'), ('prospect', 'Est un prospect')],
+        string="Statut", required=True, default='client') #readonly:"1" : Définissez la lecture seule dans le code python
+
+    
+
+    nationalite = fields.Many2one('res.country', string="Nationalité")
+
+    origine_id = fields.Many2one('crm.lead', string="Origine

@@ -1,0 +1,63 @@
+<odoo>
+  <data>
+      
+
+      
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="immobilier.list">
+      <field name="name">immobilier list</field>
+      <field name="model">immobilier.immobilier</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="immobilier.action_window">
+      <field name="name">immobilier window</field>
+      <field name="res_model">immobilier.immobilier</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="immobilier.action_server">
+      <field name="name">immobilier server</field>
+      <field name="model_id" ref="model_immobilier_immobilier"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="immobilier" id="immobilier.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="immobilier.menu_1" parent="immobilier.menu_root"/>
+    <menuitem name="Menu 2" id="immobilier.menu_2" parent="immobilier.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="immobilier.menu_1_list" parent="immobilier.menu_1"
+              action="immobilier.action_window"/>
+    <menuitem name="Server to list" id="immobilier" parent="immobilier.menu_2"
+              action="immobilier.action_server"/>
+-->
+  </data>
+</odoo>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+      
+        <record model="ir.actions.act_window" id="action_res_partner_coopérative">
+            <field name="name">Coopérative</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('est_cooperative','=', True)]</field>
+            <field name="context">{'default_est_cooperative' : True}</field>      
+        </record>
+      
+      
+        
+         <menuitem id="menu_configuration_coopérative" name="Est Coopérative" parent="menu_configuration"  sequence="6"                              action="action_res_partner_coopérative"/>
+      
+        
+        
+       <record model="ir.actions.act_window" id="action_lb_apporteur_affaires">
+            <field name="name">Apporteur d'affaires</field>
+            <field name="res_model">lb.nature_apporteur</field>
+            <field name="view_mode">tree,form</field>   
+        </record>
+      
+      
+         <menuitem id="menu_conf_apporteur_affaires" name="Est Apporteur d'affaires" parent="menu_configuration" sequence="7" action="action_lb_apporteur_affaires"/>
+
+
+         <!-- ResPartner customization -->
+
+    <record id="locataire_custom_fields_potenciel" model="ir.ui.view">
+      <field name="name">locataire.form.inherited</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+          
+        <xpath expr="//field[@name='type']" position="before">
+          <field name="est_cooperative" attrs="{'invisible': [('est_cooperative','=',False)]}"/>
+            
+          <field name="client" attrs="{'invisible': [('est_cooperative','=',True)]}"/>
+          <field name="prospect"  attrs="{'invisible': [('est_cooperative','=',True)]}"/>
+            
+          <field name="apporteur_affaires"  attrs="{'invisible': [('est_cooperative','=',True)]}"/>
+          <field name="nature_apporteur_id" attrs="{'invisible': [('apporteur_affaires','=',False)]}"/>
+          <field name="taux_apporteur" attrs="{'invisible': [('apporteur_affaires','=',False)]}"/>
+            
+          <field name="cooperative" attrs="{'invisible': [('est_cooperative','=',True)]}"/>
+          <field name="nom_cooperative" attrs="{'invisible': [('cooperative','=',False)]}" domain="[('est_cooperative','=', True)]" context="{'default_est_cooperative' : True}"/>  
+        <field name="taux_cooperative" attrs="{'invisible': [('cooperative','=',False)]}"/>
+        </xpath>
+          
+        <xpath expr="//label[@for='phone']" position="before">
+             <field name="profession_id"/>
+        </xpath>
+        
+        <xpath expr="//page[@name='internal_notes']" position="after" >
+         
+             <page string="Source marketing ">
+                 <group>
+                  <field name="origine_id"/>
+                  <field name="source_id"/> 
+                </group>
+             
+             
+             </page>
+            <page string="Les contacts de la coopérative"  attrs="{'invisible': [('est_cooperative','=',False)]}">
+                 <group>
+                  <field name="contact_cooperative" widget="one2many_tags"/>
+                </group>
+             
+             
+             </page>
+            
+            
+            
+            
+           
+            
+          </xpath>
+
+          
+      </field>
+    </record>
+    
+      
+      
+    
+    </data>
+</odoo>
+  

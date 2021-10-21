@@ -1,0 +1,363 @@
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:red;"><b>Employee Leave Request Approval by Project Manager / Department Head</b></h2>
+        <h2 class="oe_slogan" style="color:olive;"><b>Odoo HR Holidays / Time Off Leave -> Project Manager / Department Head Approval</b></h2>
+<p style="color:green;">This app allow Project Manager / Department Head to approve leaves (Time off) requested by Employee. As you know Odoo standard (Out of box) allow Team leader to approve leaves (Time off) but if your business process of leave workflow needs project manager / department head should approve leave first before team leader approve then our app will do job for you. Our app will add new button for Project manager approve on Time off form where project manager set on employee form can approve employee leaves.</p>
+        <p>
+            <b style="color:CRIMSON;">Main Features:</b>
+            <ul style="color:olive;">
+              <li>- Allow you to configure Project Manager / Department Head on Employee form. This person will be responsible to approve employee leaves as Project Manager / Department Head.</li>
+              <li>- Allow you to configure on Time off Types that you want Project Manager / Department Head approval or not for that specific Time off types so if you set checkbox that for all those leaves come under that type will require Project Manager / Department Head approval.</li>
+              <li>Project Manager / Department Head approval will work with three validation options on Time off Types. <br/>
+        1. Time Off Officer <br/>
+        2. Team Leader <br/>
+        3. Team Leader and Time Off Officer<br/> If you go to Time off Types configuration Odoo standard provide Validation  option so our approval will work for above three validation options.</li>
+              <li>Our module does not add any stage in leaves workflow but will work and raise warning if Project Manager / Department Head approval needed but Team leader approve before it then it will raise warning message to Team leader that Project Manager / Department Head approval needed.</li>
+                <li>Team leader and Time off Officer can not press button untill Project Manager / Department Head approved. System will raise warning and ask to contact Project Manager / Department Head for approval first.</li>
+              <li>For more details please see below screenshots & video link.</li>
+              <li>After Odoo 13 version we have changed workflow of approval so it is not same as v12 and previous versions flow.</li>
+            </ul>
+        </p>
+ <p style="color:green;"><b> Validation Options:</b> (Below three sections we try to explain three validation options and its workflow along with Project Manager approval step. Names are sample names to explain process.)
+</p>
+        <p style="color:CRIMSON;"><b>
+            <b style="color:CRIMSON;">Flow of Time Off Officer (Validation set on Time Off Types)</b>
+            </p>
+            <ul style="color:olive;">
+            <li>
+              Employee ==> John Mack<br/>
+              Project Manager/Department Head ==> Johnty Dexter<br/>
+              Time Off Officer ==> Mitchell John<br/>
+            </li><u style="color:brown;">Steps</u>:
+            <li style="color:#ff8000;">
+                Employee (John Mack) can make a Leave Request.
+            </li>
+            <li style="color:#ff8000;"> 
+                Project Manager/Department Head (Johnty Dexter) can Approve Leave Request.
+            </li>
+            <li style="color:#ff8000;">
+                Time Off Officer (Mitchell John) can Approve Leave Request.
+            </li>
+            </ul>
+        <p>
+        <b>
+          <p style="color:CRIMSON;"><b>
+            <b style="color:CRIMSON;">Flow of Team Leader (Validation set on Time Off Types)</b>
+            </p>
+            <ul style="color:olive;">
+            <li>
+              Employee ==> John Mack<br/>
+              Project Manager/Department Head ==> Johnty Dexter<br/>
+              Team Leader ==> Clayton<br/>
+            </li><u style="color:brown;">Steps</u>:
+            <li style="color:#ff8000;">
+                Employee (John Mack) can make a Leave Request.
+            </li>
+            <li style="color:#ff8000;">
+                Project Manager/Department Head (Johnty Dexter) can Approve Leave Request.
+            </li>
+            <li style="color:#ff8000;">
+                Team Leader (Clayton) can Approve Leave Request.
+            </li>
+            </ul>
+        <p>
+        <b>
+        <p style="color:CRIMSON;"><b>
+            <b style="color:CRIMSON;">Flow of Team Leader and Time Off Officer (Validation set on Time Off Types)</b>
+            <b>List of Sample Users we have used in demostrate on below screens and Video:</b>
+            </p>
+            <ul style="color:olive;">
+            <li>
+              Employee ==> John Mack<br/>
+              Project Manager/Department Head ==> Johnty Dexter<br/>
+              Team Leader ==> Clayton<br/>
+              Time Off Officer ==> Mitchell John<br/>
+            </li><u style="color:brown;">Steps</u>:
+            <li style="color:#ff8000;">
+                Employee (John Mack) can make a Leave Request.
+            </li>
+            <li style="color:#ff8000;">
+                Project Manager/Department Head (Johnty Dexter) can Approve Leave Request.
+            </li>
+            <li style="color:#ff8000;">
+                Team Leader (Clayton) can Approve Leave Request.
+            </li>
+            <li style="color:#ff8000;">
+                Time Off Officer (Mitchell John) can Validate Leave Request.
+            </li>
+            </ul>
+        <p>
+        <b>
+   </div>
+</section>
+
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Project Manager/Department Head field on Employee Form</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="1.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Project Manager / Department Head Approval checkbox/boolean field added on Time Off Types</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;">Project Manager / Department Head Approval field available for below three validation options:
+        <br/>
+        1. Time Off Officer <br/>
+        2. Team Leader <br/>
+        3. Team Leader and Time Off Officer
+        </b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="paid.png">
+       </div>
+   </div>
+</section>
+
+<h2 class="oe_slogan"><b style="color:blue;">Flow of Team Leader and Time Off Officer(Validation
+ of Time Off Types)</b></h2>
+
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Project Manager / Department Head Approval field for Team Leader and Time Off Officer options:</b></h2>
+       <div class="oe_demo oe_screenshot">
+           <img src="both1.png">
+       </div>
+   </div>
+</section>
+
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Employee (John Mack) can make a Leave Request - Odoo Standard.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="3.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Before approve of Project Manager / Department Head Team Leader can not Approve Leave Request.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="10.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Team Leader can not click on Project Manager / Department Head Approve button. Only project manager / department head set on employee form will be allow to click button.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="4.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Project Manager/Department Head (Johnty Dexter) can Approve Leave Request.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="5.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Team Leader (Clayton) can Approve Leave Request - Odoo Standard.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="6.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">After Team Leader Approval of Leave Request state Change To Approve to Second Approval</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="7.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Time Off Officer (Mitchell John) can Validate Leave Request - Odoo Standard.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="8.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">After Time Off Officer Validate of Leave Request Then Leave Request is Approved.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="9.png">
+       </div>
+   </div>
+</section>
+
+<h2 class="oe_slogan"><b style="color:blue;">Flow of Team Leader (Validation
+ of Time Off Types)</b></h2>
+
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Project Manager / Department Head Approval for Team Leader options:</b></h2>
+       <div class="oe_demo oe_screenshot">
+           <img src="team1.png">
+       </div>
+   </div>
+</section>
+
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Employee (John Mack) can make a Leave Request - Odoo Standard.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="team2.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Project Manager/Department Head (Johnty Dexter) can Approve Leave Request.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="team5.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Team Leader (Clayton) can Approve Leave Request - Odoo Standard.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="team6.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">After Team Leader Approval of Leave Request is Approved.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="team7.png">
+       </div>
+   </div>
+</section>
+
+<h2 class="oe_slogan"><b style="color:blue;">Flow of Time Off Officer (Validation
+ of Time Off Types)</b></h2>
+
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Project Manager / Department Head Approval for Time Off Officer options:</b></h2>
+       <div class="oe_demo oe_screenshot">
+           <img src="officer1.png">
+       </div>
+   </div>
+</section>
+
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Employee (John Mack) can make a Leave Request - Odoo Standard.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="officer2.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Project Manager/Department Head (Johnty Dexter) can Approve Leave Request.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="officer5.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">Time Off Officer (Mitchell John) can Approve Leave Request - Odoo Standard.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="officer6.png">
+       </div>
+   </div>
+</section>
+<section class="oe_container">
+   <div class="oe_row oe_spaced">
+       <h2 class="oe_slogan"><b style="color:CRIMSON;">After Time Off Officer Approval of Leave Request is Approved.</b></h2>
+       <p class="oe_slogan"><b style="color:CRIMSON;"></b></p>
+       <div class="oe_demo oe_screenshot">
+           <img src="officer7.png">
+       </div>
+   </div>
+</section>
+
+
+<section class="oe_container" >
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan">
+            <strong><font style="color:#2dd280;" class="text-epsilon">Contact / Support<br/></font></strong>
+            <strong><font style="color:crimson" class="text-epsilon">Introducing</font>
+            <font style="color:crimson;" class="text-epsilon">Probuse Consulting Services Pvt. Ltd.</font></strong>
+          </h2>
+       <div class="oe_span6">
+           <div class="mt32 col-md-10">
+           <div class="oe_picture" style="margin: 25px 10%;">
+               <a  target='new' href="http://www.probuse.com/">
+                   <img src="logo.png">
+               </a>
+           </div>
+           <p class="oe_mt32">
+               <font style="color:crimson;">If you need any help or want more additional features, you may contact us through:</font><br/>
+               <font style="color:crimson;">Email: <a href="contact@probuse.com">contact@probuse.com</a> <br/>
+               <font style="color:crimson;">Website: </font><a href="http://www.probuse.com/" target='new'><u>www.probuse.com</u></a> <br/>
+               <font style="color:crimson;">Skype: mustufa_probuse</font><br/>
+           </p>
+           <p>
+                <h2>
+                    <a href="https://www.facebook.com/probusecs" target="new">
+                      <i class="fa fa-facebook-square" style="font-size:38px;"></i>
+                    </a>
+                    <a href="https://twitter.com/mustufa_odoo" target="new">
+                      <i class="fa fa-twitter" style="font-size:38px;"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/mustufa-rangwala-odoo-openerp-0a46777/" target="new">
+                      <i class="fa fa-linkedin" style="font-size:38px;"></i>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCHlyoC4khP44M1cOCJXo2FQ" target="new">
+                      <i class="fa fa-youtube-play" style="font-size:38px;"></i>
+                    </a>
+                    <a href="https://plus.google.com/u/0/113284573788891837715/posts" target="new" rel="publisher">
+                      <i class="fa fa-google-plus-square" style="font-size:38px;"></i>
+                    </a>
+              </h2>
+            </p>
+           </div>
+       </div>
+    <div class="mt32 oe_span6">
+           <p style="text-align: justify; ">
+            <font class="text-epsilon" style="color:crimson;">Probuse Consulting Service Pvt Ltd is an Software and Web development specialist which offers complete business application together. We are well experienced to provide a face for your business on the software and Internet level.</font>
+          </p>
+          <p style="text-align: justify;">
+            <font class="text-epsilon" style="color:crimson">Probuse Consulting Service Pvt Ltd is a specialist in Odoo/OpenERP services and could give your business open source hand to drive.</font>
+          </p>
+            <h3 class="o_animate o_anim_bounce_in" style="text-align: left; animation-play-state: paused;">
+                <font style="font-size: 18px;color:#ff8000;" class="text-epsilon"><strong>Our Services</strong></font>
+            </h3>
+            <ul style="list-style-type:square">
+                <a href="http://www.probuse.com/page/odoo-implementation" target="new"><li list-style-type: "*";><p style="text-align: left; color:crimson;">Odoo Implementation</p></a></li>
+                <a href="http://www.probuse.com/page/odoo-support" target="new"><li><p style="text-align: left; color:crimson;">Odoo Support</p></a></li>
+                <a href="http://www.probuse.com/page/odoo-customization" target="new"><li><p style="text-align: left; color:crimson;">Odoo Customization</p></li></a>
+                <a href="http://www.probuse.com/page/odoo-migration" target="new"><li><p style="text-align: left; color:crimson;">Odoo Migration</p></a></li>
+                <a href="http://www.probuse.com/page/odoo-training" target="new"><li><p style="text-align: left; color:crimson;">Odoo Training</p></a></li>
+            </ul>
+           </p>
+       </div>
+   </div>
+</section>

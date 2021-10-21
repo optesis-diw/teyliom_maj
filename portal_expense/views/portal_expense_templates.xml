@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_layout" name="Portal layout: expense menu entry" inherit_id="portal.portal_breadcrumbs" priority="44">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'expense' or expense" t-attf-class="breadcrumb-item #{'active ' if not expense else ''}">
+                <a t-if="expense" t-attf-href="/my/expenses?{{ keep_query() }}">expenses</a>
+                <t t-else="">Expenses</t>
+            </li>
+            <li t-if="expense" class="breadcrumb-item active">
+                <t t-esc="expense.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home" name="Portal My Home: expense entries" inherit_id="portal.portal_my_home" priority="100">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Expenses</t>
+                <t t-set="url" t-value="'/my/expenses'"/>
+                <t t-set="count" t-value="expense_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_expenses" name="My expenses">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">expenses</t>
+                <li><a href="/expense/create" class="btn btn-primary">Create expense Request</a></li>
+            </t>
+            <t t-if="not expenses">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no expenses.
+                </div>
+            </t>
+            <t t-if="expenses" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total Amount</th>
+                        <th>Paid By</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="expenses" t-as="expense">
+                        <td class="text-left">
+                            <t t-esc="expense.date"/>
+                        </td>
+                        <td class="text-left">
+                            <t t-if="expense.state == 'reported'"><a t-attf-href="/expense/editable/#{expense.id}?{{ keep_query() }}"><span t-field="expense.name"/></a></t>
+                            <t t-if="expense.state != 'reported'"><a t-attf-href="/expense/readonly/#{expense.id}?{{ keep_query() }}"><span t-field="expense.name"/></a></t>
+                        </td>
+                        <td class="text-left">
+                            <t t-esc="expense.product_id.name"/>
+                        </td>
+                        <td class="text-left">
+                            <t t-esc="expense.unit_amount" />
+                        </td>
+                        <td class="text-left">
+                            <t t-esc="expense.quantity" />
+                        </td>
+                        <td class="text-left">
+                            <t t-esc="expense.total_amount" />
+                        </td>
+                        <td class="text-left">
+                            <t t-if="expense.payment_mode == 'own_account'"><span class="badge badge-pill badge-info">Employee</span></t>
+                            <t t-if="expense.payment_mode == 'company_account'"><span class="badge badge-pill badge-warning">Company</span></t>
+                        </td>
+                        <td class="text-left">
+                            <t t-if="expense.state == 'draft'"><span class="badge badge-pill badge-info">To Submit</span></t>
+                            <t t-if="expense.state == 'reported'"><span class="badge badge-pill badge-warning">Submitted</span></t>
+                            <t t-if="expense.state == 'approved'"><span class="badge badge-pill badge-success">Approved</span></t>
+                            <t t-if="expense.state == 'Paid'"><span class="badge badge-pill badge-info">Paid</span></t>
+                            <t t-if="expense.state == 'refused'"><span class="badge badge-pill badge-danger">Refused</span></t>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+        <template id="registration_expense">
+            <t t-call="portal.portal_layout">
+                <div>
+                <tbody>
+                    <h3 class="text-center">Expense Request Form</h3>
+                    <form id="expense_registration_form" t-attf-action="/expense/register" method="post" enctype="multipart/form-data" class="panel panel-default">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="name">Title</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="name" required="1"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="date_start">Expense Product</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="product_id" class="form-control" required="required">
+                                    <option required="required"> </option>
+                                    <t t-foreach="product_types or []" t-as="product_type">
+                                        <option t-att-value="product_type.id">
+                                            <t t-esc="product_type.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="halfday_checkbox">Price</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="number" name="price" step="0.01" class="form-control" placeholder="00"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_from">Quantity</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="number" class="form-control" step="0.01" name="quantity" placeholder="00"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="hide_field_if_halfday">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_to">Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" name="date"  required="required"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="date_request_from_period">
+                         <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="payment_mode">Paid By</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="payment_mode" class="form-control" required="required">
+                                    <option>Employee</option>
+                                    <option>Company</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="date_request_from_period">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="attachments">Attachment(s)</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="file" name="attachments" class="form-control o_website_form_input" accept="image/*,application/pdf,video/*"/>
+                            </div>
+                        </div>
+                        <footer class="modal-footer">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </footer>
+                    </form>
+                </tbody>
+                </div>
+            </t>
+        </template>
+
+        <template id="edit_expense">
+            <t t-call="portal.portal_layout">
+                <div>
+                <tbody>
+                    <h3 class="text-center">Edit Expense Request</h3>
+                    <form id="expense_delete_form" t-attf-action="/expense/delete" method="post" class="panel panel-default">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="expense_id" t-att-value="expense.id"/>
+                        <footer class="modal-footer">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-primary" style="background-color: #ff2300;border-color: #ff2f00;">Delete</button>
+                            </div>
+                        </footer>
+                    </form>
+                    <form id="expense_registration_form" t-attf-action="/expense/edit" method="post" enctype="multipart/form-data" class="panel panel-default">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="expense_id" t-att-value="expense.id"/>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="name">Title</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="name"  t-att-value="expense.name" required="1"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="date_start">Expense Product</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="product_id" class="form-control" t-att-value="expense.product_id">
+                                    <option>Product...</option>
+                                    <t t-foreach="product_types or []" t-as="product_type">
+                                        <option t-att-value="product_type.id" t-att-selected="product_type.id == expense.product_id.id">
+                                            <t t-esc="product_type.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="halfday_checkbox">Price</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="number" name="price" step="0.01" class="form-control" t-att-value="expense.unit_amount" placeholder="00"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_from">Quantity</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="number" step="0.01" class="form-control" name="quantity" t-att-value="expense.quantity"  placeholder="00"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="hide_field_if_halfday">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_to">Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" t-att-value="expense.date" name="date"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="date_request_from_period">
+                         <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="payment_mode">Paid By</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="payment_mode" class="form-control">
+                                    <option t-att-selected="expense.payment_mode == 'own_account'" value="Employee">Employee</option>
+                                    <option t-att-selected="expense.payment_mode == 'company_account'" value="Company">Company</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="date_request_from_period">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="attachments">Attachment(s)</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="file" name="attachments" class="form-control o_website_form_input" accept="image/*,application/pdf,video/*"/>
+                            </div>
+                        </div>
+                        <t if="attachment_details"><table id="attachment_table" class="table table-striped tenders-table">
+                            <thead>
+                                <tr>
+                                    <th>Attachment</th>
+                                    <th>Download Link</th>
+                                    <th>Date</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                               <tbody>
+                                   <t t-foreach="attachment_details" t-as="att_detail">
+                                       <tr>
+                                           <td>
+                                                <span t-esc="att_detail.name" style="font-family:sans-serif !important;color:#000"/>
+                                           </td>
+                                           <td>
+                                           <a t-attf-href="/web/content/#{att_detail.id}?download=true" target="_blank">
+                                               <div class='oe_attachment_embedded o_image' t-att-title="att_detail.name" t-att-data-mimetype="att_detail.mimetype" t-attf-data-src="/web/image/#{att_detail.id}/50x50"/>
+                                           </a>
+                                           <td>
+                                                <span t-esc="att_detail.create_date" style="font-family:sans-serif !important;color:#000"/>
+                                           </td>
+                                           <td>
+                                               <a t-attf-href="/delete/attachment/#{att_detail.id}/#{expense.id}?{{ keep_query() }}"><span class="fa fa-delete">Delete</span></a>
+                                           </td>
+                                           </td>
+                                       </tr>
+                                   </t>
+                               </tbody>
+                           </table>
+                        </t>
+                        <footer class="modal-footer">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </footer>
+                    </form>
+                </tbody>
+                </div>
+            </t>
+        </template>
+
+        <template id="view_expense">
+            <t t-call="portal.portal_layout">
+                <div>
+                <tbody>
+                    <h3 class="text-center">Expense Request</h3>
+                    <form id="expense_registration_form" t-attf-action="/expense/edit" method="post" class="panel panel-default">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="name">Title</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="name"  t-att-value="expense.name" readonly="1"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="date_start">Expense Product</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="product_id" class="form-control" t-att-value="expense.product_id" readonly="1">
+                                    <option>Product...</option>
+                                    <t t-foreach="product_types or []" t-as="product_type">
+                                        <option t-att-value="product_type.id" t-att-selected="product_type.id == expense.product_id.id">
+                                            <t t-esc="product_type.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="halfday_checkbox">Price</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="number"  step="0.01" name="price" class="form-control" readonly="1" t-att-value="expense.unit_amount" placeholder="00"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_from">Quantity</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="number" class="form-control" name="quantity" t-att-value="expense.quantity" readonly="1"  placeholder="00"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="hide_field_if_halfday">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_to">Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" t-att-value="expense.date" readonly="1" name="date"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="date_request_from_period">
+                         <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="period">Paid By</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="payment_mode" class="form-control" readonly="1">
+                                    <option t-att-selected="expense.payment_mode == 'own_account'" value="am">Employee</option>
+                                    <option t-att-selected="expense.payment_mode == 'company_account'" value="am">Company</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="name">State</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="state"  t-att-value="expense.state" readonly="1"/>
+                            </div>
+                        </div>
+                        <t if="attachment_details"><table id="attachment_table" class="table table-striped tenders-table">
+                            <thead>
+                                <tr>
+                                    <th>Attachment</th>
+                                    <th>Download Link</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                               <tbody>
+                                   <t t-foreach="attachment_details" t-as="att_detail">
+                                       <tr>
+                                           <td>
+                                                <span t-esc="att_detail.name" style="font-family:sans-serif !important;color:#000"/>
+                                           </td>
+                                           <td>
+                                           <a t-attf-href="/web/content/#{att_detail.id}?download=true" target="_blank">
+                                               <div class='oe_attachment_embedded o_image' t-att-title="att_detail.name" t-att-data-mimetype="att_detail.mimetype" t-attf-data-src="/web/image/#{att_detail.id}/50x50"/>
+                                           </a>
+                                           <td>
+                                                <span t-esc="att_detail.create_date" style="font-family:sans-serif !important;color:#000"/>
+                                           </td>
+                                           </td>
+                                       </tr>
+                                   </t>
+                               </tbody>
+                           </table>
+                        </t>
+                    </form>
+                </tbody>
+                </div>
+            </t>
+        </template>
+
+</odoo>

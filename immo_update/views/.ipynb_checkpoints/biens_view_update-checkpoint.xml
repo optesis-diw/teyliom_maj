@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data>
+        
+
+        <record id="product_immobilier_update" model="ir.ui.view">
+              <field name="name">product.template.inherit</field>
+              <field name="model">product.template</field>
+              <field name="inherit_id" ref="product.product_template_only_form_view"/> 
+              <field name="arch" type="xml">
+               
+                 
+                 <xpath expr="//page[@name='general_information']" position="inside" >
+                
+            
+                        <group>
+                            <group>   
+                                 <field name="superficie"/>
+                                
+                            </group>   
+                            <group>
+                                <field name="ilot_ids"/>
+                            </group>
+                            <group>
+                                 <field name="phase_ids"/>
+                            </group>
+                        </group> 
+                     
+
+                  </xpath>
+                  
+                  
+              </field>
+            </record>
+        
+        
+          <record model="ir.ui.view" id="ilot_form_view">
+            <field name="name">Ilot</field>
+            <field name="model">lb.ilot</field>
+            <field name="arch" type="xml">
+                <form string="ilot Form">
+                    <sheet>
+                      <group>
+                                    <group>
+                                        <field name="name_ilot"/>
+                                    </group>
+                      </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ilote -->
+
+        <record model="ir.ui.view" id="ilot_tree_view">
+            <field name="name">ilot</field>
+            <field name="model">lb.ilot</field>
+            <field name="arch" type="xml">
+                <tree string="ilot Tree">
+                    <field name="name_ilot"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!--Action ilot-->
+         <record model="ir.actions.act_window" id="action_list_ilot">
+            <field name="name">Ilot</field>
+            <field name="res_model">lb.ilot</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        
+        <record model="ir.ui.view" id="phase_tree_view">
+            <field name="name">phase</field>
+            <field name="model">lb.phase</field>
+            <field name="arch" type="xml">
+                <tree string="phase Tree">
+                    <field name="name_phase"/>
+                </tree>
+            </field>
+        </record>
+
+       
+
+             <record model="ir.ui.view" id="phase_form_view">
+            <field name="name">Phase</field>
+            <field name="model">lb.phase</field>
+            <field name="arch" type="xml">
+                <form string="phase Form">
+                    <sheet>
+          <group>
+                        <group>
+                            <field name="name_phase"/>
+                        </group>
+          </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        
+        <!--Action phase-->
+         <record model="ir.actions.act_window" id="action_list_phase">
+            <field name="name">Phase</field>
+            <field name="res_model">lb.phase</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+
+         <menuitem id="menu_configuration_ilot" name="Ilot" parent="immobilier.menu_configuration" sequence="8" action="action_list_ilot"/>
+         <menuitem id="menu_configuration_phase" name="Phase" parent="immobilier.menu_configuration"  sequence="9" action="action_list_phase"/>
+
+        
+  </data>
+</odoo>
+       

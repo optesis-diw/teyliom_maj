@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+manager_access_lb_ilot,lb.ilot,model_lb_ilot,immobilier.library_group_manager_new,1,1,1,1
+manager_access_lb_phase,lb.phase,model_lb_phase,immobilier.library_group_manager_new,1,1,1,1

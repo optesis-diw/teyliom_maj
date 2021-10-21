@@ -1,0 +1,189 @@
+<odoo>
+    <data>
+        
+        
+        
+         <record model="lb.nature_apporteur" id="n_app1">
+            <field name="nature_apporteur">Indépendant</field>
+              <field name="taux_apporteur">2</field>
+        </record>
+
+        <record model="lb.nature_apporteur" id="n_app2">
+            <field name="nature_apporteur">Agence</field>
+            <field name="taux_apporteur">3</field>
+        </record>
+    
+          
+        <record model="lb.type_bien" id="tb1">
+            <field name="name_type_bien">Appartement</field>
+        </record>
+
+        <record model="lb.type_bien" id="tb2">
+            <field name="name_type_bien">Studio</field>
+        </record>
+
+
+        <record model="lb.type_bien" id="tb3">
+            <field name="name_type_bien">Terrain</field>
+        </record>
+        
+        <record model="lb.type_bien" id="tb4">
+            <field name="name_type_bien">Magasin</field>
+        </record>
+        
+            
+
+        <record model="lb.type_piece" id="c1">
+            <field name="type_piece">Salon</field>
+            <!-- no description for this one -->
+        </record>
+        <record model="lb.type_piece" id="c2">
+            <field name="type_piece">Chambre Parent</field>
+        </record>
+
+        <record model="lb.type_piece" id="c3">
+            <field name="type_piece">Chambre Enfant</field>
+            <!-- no description for this one -->
+        </record>
+        <record model="lb.type_piece" id="c4">
+            <field name="type_piece">Chambre visiteur</field>
+        </record>
+
+        <record model="lb.type_piece" id="c5">
+            <field name="type_piece">Cuisine</field>
+            <!-- no description for this one -->
+        </record>
+        <record model="lb.type_piece" id="c6">
+            <field name="type_piece">Toilette</field>
+        </record>
+        
+        
+        
+        
+       
+       
+       
+ 
+        <record model="lb.type_lieu" id="l1">
+            <field name="type_lieu">Restaurant</field>
+            <!-- no description for this one -->
+        </record>
+        <record model="lb.type_lieu" id="l2">
+            <field name="type_lieu">Hotel</field>
+        </record>
+
+        <record model="lb.type_lieu" id="l3">
+            <field name="type_lieu">Marché</field>
+            <!-- no description for this one -->
+        </record>
+        <record model="lb.type_lieu" id="l4">
+            <field name="type_lieu">Plage</field>
+        </record>
+
+        <record model="lb.type_lieu" id="l5">
+            <field name="type_lieu">Mosquée</field>
+            <!-- no description for this one -->
+        </record>
+        <record model="lb.type_lieu" id="l6">
+            <field name="type_lieu">Espace de loisirs</field>
+        </record>
+        
+        
+        
+        <record model="lb.ville" id="v1">
+            <field name="nom">Dakar</field>
+        </record>
+        
+         <record model="lb.ville" id="v2">
+            <field name="nom">Mbour</field>
+        </record>
+        
+        
+        
+        <record model="lb.quartier" id="q1">
+            <field name="nom_quartier">Fann Hock</field>
+                     
+        </record>
+        
+        <record model="lb.quartier" id="q2">
+            <field name="nom_quartier">liberté 6</field>
+        </record>
+        
+        
+        <record model="lb.quartier" id="q3">
+            <field name="nom_quartier">Mermoz</field>
+        </record>
+        
+        <record model="lb.quartier" id="q4">
+            <field name="nom_quartier">Sacré Coeur</field>
+        </record>
+        
+        <record model="lb.quartier" id="q5">
+            <field name="nom_quartier">Amitié</field>
+        </record>
+        
+        <record model="lb.quartier" id="q6">
+            <field name="nom_quartier">Mamelles</field>
+        </record>
+        
+        <record model="lb.quartier" id="q7">
+            <field name="nom_quartier">Almadies</field>
+        </record>
+        
+        
+        <record model="lb.quartier" id="q8">
+            <field name="nom_quartier">Ngor</field>
+        </record>
+        
+        
+        <record model="lb.quartier" id="q9">
+            <field name="nom_quartier">Yoff</field>
+        </record>
+        
+        <record model="lb.quartier" id="q10">
+            <field name="nom_quartier">Grand Mbour</field>
+        </record>
+        
+        
+        <record model="lb.quartier" id="q11">
+            <field name="nom_quartier">Mariste</field>
+        </record>
+        
+          <record model="lb.quartier" id="q12">
+            <field name="nom_quartier">Liberté 6</field>
+        </record>
+        
+        
+        <record model="lb.quartier" id="q13">
+            <field name="nom_quartier">Fann Résidence</field>
+        </record>
+        
+        
+<!--
+          <record id="object0" model="immobilier.immobilier">
+            <field name="name">Object 0</field>
+            <field name="value">0</field>
+          </record>
+
+          <record id="object1" model="immobilier.immobilier">
+            <field name="name">Object 1</field>
+            <field name="value">10</field>
+          </record>
+
+          <record id="object2" model="immobilier.immobilier">
+            <field name="name">Object 2</field>
+            <field name="value">20</field>
+          </record>
+
+          <record id="object3" model="immobilier.immobilier">
+            <field name="name">Object 3</field>
+            <field name="value">30</field>
+          </record>
+
+          <record id="object4" model="immobilier.immobilier">
+            <field name="name">Object 4</field>
+            <field name="value">40</field>
+          </record>
+-->
+    </data>
+</odoo>

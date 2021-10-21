@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data>
+        
+         
+        <record id="inherit_search_product_template" model="ir.ui.view">
+      <field name="name">product.template.inherited</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='inactive']" position="after">
+                     <filter string="Bien disponible" name="etat_dispo" domain="[('etat_bien_domain', '=', 'dispo')]"/>
+                </xpath>
+                
+                 <xpath expr="//filter[@name='etat_dispo']" position="after">
+                     <filter string="Bien option" name="etat_option" domain="[('etat_bien_domain', '=', 'option')]"/>
+                </xpath>
+                
+                <xpath expr="//filter[@name='etat_option']" position="after">
+                     <filter string="Bien Réservé" name="etat_reserve" domain="[('etat_bien_domain', '=', 'reserve')]"/>
+                </xpath>
+                
+                
+                  <xpath expr="//filter[@name='etat_reserve']" position="after">
+                        <filter string="Type de bien " name="type_bien_ids_group" context="{'group_by':'type_bien_ids'}"/>
+                   </xpath>    
+                
+            </field>
+        </record>
+        
+        
+         <record id="product_template_pivot" model="ir.ui.view">
+            <field name="name">product.template.pivot</field>
+            <field name="model">product.template</field>
+             <field name="arch" type="xml">
+                <pivot string="Timesheet">
+                    <field name="nom_projet_ids" type="row"/>
+                    <field name="name" type="col"/>
+                    <field name="list_price" type="col"/>
+                    
+               </pivot>
+             </field>     
+        </record>
+        
+        
+    <record id="product_user_simple_group" model="ir.ui.view">
+       <field name="name">product.template.inherit</field>
+       <field name="model">product.template</field>
+       <field name="inherit_id" ref="product.product_template_only_form_view"/>
+       <field name = "groups_id" eval="[(6, 0, [ref ('immobilier.library_group_user_new')])]" />                       
+       <field name="arch" type="xml">
+        <field name="list_price" position="attributes">
+            <attribute name="readonly">1</attribute>                   
+        </field>                             
+       </field>
+    </record>
+        
+         <record id="product_user_manager_goup" model="ir.ui.view">
+       <field name="name">product.template.inherit</field>
+       <field name="model">product.template</field>
+       <field name="inherit_id" ref="product.product_template_only_form_view"/>
+       <field name = "groups_id" eval="[(6, 0, [ref ('immobilier.library_group_manager_new')])]" />                       
+       <field name="arch" type="xml">
+            <field name="list_price" position="attributes">
+            <attribute name="readonly">0</attribute>                   
+        </field>                    
+       </field>
+    </record>
+        
+      
+        
+        
+        <!--heritage article-->
+      
+     <record id="product_user_manager" model="ir.ui.view">
+      <field name="name">product.template.inherit</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+           <label for="purchase_ok" position="after">
+               <div>
+                   <field name="bien_ok" />
+                   <label for="bien_ok" />
+               </div>
+            <field name="etat" attrs="{'invisible': [('etat','!=','dispo')]}" style="color: #FFFFFF; background-color: #00A09D"/> 
+            <field name="etat" attrs="{'invisible': [('etat','!=','reserve')]}" style="color: #FFFFFF; background-color: #DC6965"/> 
+            <field name="etat" attrs="{'invisible': [('etat','!=','option')]}" style="color: #FFFFFF; background-color: #ffc107"/> 
+               
+               <!--
+               <button attrs="{'invisible': [('etat','!=','dispo')]}" style="color: #FFFFFF; background-color: #00A09D"><field name="etat"/>
+                        </button>
+                        <button attrs="{'invisible': [('etat','!=','reserve')]}" style="color: #FFFFFF; background-color: #DC6965"><field name="etat"/>
+                        </button>
+                        <button attrs="{'invisible': [('etat','!=','option')]}" style="color: #FFFFFF; background-color: #ffc107"><field name="etat"/>
+                        </button>
+-->
+
+           </label>
+        
+         
+        <xpath expr="//field[@name='list_price']" position="attributes">
+              <!--<attribute name="groups">immobilier.library_group_manager_new</attribute> -->
+            <attribute name="attrs">{'readonly':['|',('etat','!=','dispo')]}</attribute>
+          </xpath>
+          
+         
+          
+        
+          
+          <xpath expr="//page[@name='general_information']" position="after" >
+              <!--
+             <page string="Equipe commerciale" attrs="{'invisible':[('bien_ok','!=',True)]}">
+                  <field name="user_id" optional="show"/>
+                  <field name="team_id" optional="hide"/>
+              </page>
+            -->
+              
+              <page string="Caractéristique du bien " attrs="{'invisible':[('bien_ok','!=',True)]}">   
+                <group>
+                    <group>   
+                         <field name="type_bien_ids"/>
+                        <field name="check_field" invisible="1"/>
+                        <field name="user_id" invisible="1"/>
+                        <field name="user_admin" invisible="1"/>
+                        <field name="user_connect" invisible="1"/>
+                        <field name="etat_bien_domain" invisible="1"/>
+                        
+                    </group>   
+                    <group >
+                        <field name="nom_projet_ids"/>
+                    </group>
+                </group> 
+                  
+               <group string="Adresse">
+                    <group>   
+                        <field name="rue"/>
+                        <field name="quartier"/>
+                    </group>   
+                    <group >
+                        <field name="ville"  class="o_address_city"/>
+                         
+                        <!--
+                       <field name="pays" placeholder="Pays" class="o_address_country"/>
+                        -->
+                    </group>
+                </group> 
+                <group string="Piéces">
+                   
+                        <group>
+                             <field name="chambres"></field>
+                            <field name="salons"></field>
+                            <field name="cour"></field>
+                        </group>
+                       <group>
+                            <field name="cuisines"></field>
+                            <field name="toilette"></field>
+                             <field name="salles_bain"/>
+                       </group>
+                        
+                </group>  
+                    
+                <group>    
+                
+                      <group>
+                            <field name="ascenseur"/>
+                            <field name="g_electroge"/>
+                            <field name="jardin"/>
+                      </group>
+                      
+                      <group>
+                        <field name="balcon"/>
+                        <field name="parking"/>   
+                        <field name="ameublement"/>
+                        <field name="nbre_tour"/> 
+                      </group>
+                
+                    
+               </group> 
+                  
+               <group string="Détail des piéce">
+                    <group><field name="sous_propriete_ids"/> </group>
+               </group>  
+                    
+              </page>
+                  
+                  
+              <page string="Lieux Plus Proche" attrs="{'invisible':[('bien_ok','!=',True)]}">
+                  <group>
+                      <field name="plus_proche_ids"/>
+                  </group>
+              </page>
+              <page string="Plans, Photos et Documents" attrs="{'invisible':[('bien_ok','!=',True)]}">
+                  <page string="Plans d'étage"><group><field name="plan_ids"></field></group></page>
+                  <page string="Photos"><group><field name="photos_ids"></field></group></page>
+                  <page string="Documents"><group><field name="documents_ids"></field></group></page>
+              </page>
+          </xpath>
+      </field>
+    </record>
+        
+        
+        <record id="product_kanban_view" model="ir.ui.view">
+            <field name="name">product.template.kanban</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//div[@name='tags']" position="after">
+                    <div name="type_bien_ids" attrs="{'invisible': [('bien_ok','=',False)]}">
+                                <ul>
+                                      <field name="bien_ok" invisible="1"/>
+                                   
+                                    <li><strong>Type Bien : <field name="type_bien_ids"/></strong></li>
+                                </ul>
+                    </div>
+                </xpath>
+                <xpath expr="//div[@name='type_bien_ids']" position="after">
+                    <div name="etat_bien"> 
+                      <ul>
+                          
+                        
+                        <button attrs="{'invisible': [('etat','!=','dispo')]}" 
+                                style="color: #FFFFFF; background-color: #00A09D; border-color:   #00A09D;"><field name="etat"/>
+                        </button>
+                        <button attrs="{'invisible': [('etat','!=','reserve')]}" 
+                                style="color: #FFFFFF; background-color: #DC6965; border-color: #DC6965;"><field name="etat"/>
+                        </button>
+                        <button attrs="{'invisible': ['|',('etat','==','dispo'),('etat','==','reserve')]}"
+                                style="color: #FFFFFF; background-color: #ffc107 ; border-color: #ffc107;"><field name="etat"/>
+                        </button>
+                      </ul>
+                    </div>
+                </xpath>
+
+                   
+
+            </field>
+        </record>
+
+
+        
+        
+          <record model="ir.actions.act_window" id="action_list_template">
+            <field name="name">Biens</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">kanban,tree,form,pivot,graph</field>
+             <field name="context">{'group_by': 'nom_projet_ids','no_create': True}</field>
+             <field name = "groups_id" eval="[(6, 0, [ref ('immobilier.library_group_user_new')])]" />                       
+        </record>
+        
+            <record model="ir.actions.act_window" id="action_list_template_admin">
+            <field name="name">Biens</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">kanban,tree,form,pivot,graph</field>
+             <field name="context">{'group_by': 'nom_projet_ids','no_create': True}</field>
+             <field name = "groups_id" eval="[(6, 0, [ref ('immobilier.library_group_manager_new')])]"  />                       
+        </record>
+       
+        
+        
+         <menuitem id="menu_root" name="Immobilier"
+                 web_icon="immobilier,static/description/immo.jpg"/>
+                  
+        
+         <menuitem id="menu_article" name="Articles" parent="menu_root"/>
+        
+         <menuitem id="menu_bien" name="Biens" parent="menu_article"  sequence="1"  action="action_list_template" groups="library_group_user_new"/>
+        
+       
+         <menuitem id="menu_bien_admin" name="Biens admin" parent="menu_article"  sequence="1"  action="action_list_template_admin" groups="library_group_manager_new"/>
+        
+        
+        
+        
+        
+        
+        <!-- Quartier form: Les formulaires utilisés pour créer et modifier des enregistrements. -->
+        
+        <record model="ir.ui.view" id="quartiers_form_view">
+            <field name="name">Quartier</field>
+            <field name="model">lb.quartier</field>
+            <field name="arch" type="xml">
+                <form string="Quartier">
+                    <sheet>
+          
+                        <group>
+                            <field name="nom_quartier"/>
+                        </group>
+         
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+
+
+        <!--Les vues arborescentes, également appelées vues de liste"tree" Quartier -->
+
+        <record model="ir.ui.view" id="quartier_tree_view">
+            <field name="name">Quartier</field>
+            <field name="model">lb.quartier</field>
+            <field name="arch" type="xml">
+                <tree string="Quartiers">
+                    <field name="nom_quartier"/>
+                </tree>
+            </field>
+        </record>
+        
+        
+        
+        
+         <!-- Ville vue form  -->
+
+    <record model="ir.ui.view" id="ville_form_view">
+            <field name="name">Villes</field>
+            <field name="model">lb.ville</field>
+            <field name="arch" type="xml">
+                <form string="Ville Form">
+                    <sheet>
+          <group>
+                        <group>
+                            <field name="nom"/>
+                        </group>
+          </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Ville vue liste tree -->
+
+        <record model="ir.ui.view" id="ville_tree_view">
+            <field name="name">Villes</field>
+            <field name="model">lb.ville</field>
+            <field name="arch" type="xml">
+                <tree string="Ville Tree">
+                    <field name="nom"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!--Action ville-->
+         <record model="ir.actions.act_window" id="action_list_ville">
+            <field name="name">Villes</field>
+            <field name="res_model">lb.ville</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+       
+
+        <record model="ir.actions.act_window" id="action_list_quartier">
+            <field name="name">Action quartier</field>
+            <field name="res_model">lb.quartier</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        
+      
+        
+        <menuitem id="menu_configuration" name="Configurations" parent="menu_root"/>
+
+         <menuitem id="menu_configuration_ville" name="Ville" parent="menu_configuration" sequence="2" action="action_list_ville"/>
+         <menuitem id="menu_configuration_quartier" name="Quartier" parent="menu_configuration"  sequence="1" action="action_list_quartier"/>
+        
+         
+        
+        
+         <record model="ir.actions.act_window" id="action_type_bien">
+            <field name="name">Type de biens</field>
+            <field name="res_model">lb.type_bien</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+
+        
+    
+
+
+        <record model="ir.actions.act_window" id="action_projet">
+            <field name="name">Projet</field>
+            <field name="res_model">lb.projet</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <menuitem id="menu_configuration_type_bien" name="Type Biens" parent="menu_configuration" sequence="3" action="action_type_bien"/>
+         <menuitem id="menu_configuration_projet" name="Projets" parent="menu_configuration"  sequence="4" action="action_projet"/>
+        
+        
+        <!--lieu plus proche-->
+          <record model="ir.ui.view" id="lieu_form_view">
+            <field name="name">Lieu proche</field>
+            <field name="model">lb.lieu</field>
+            <field name="arch" type="xml">
+                <form string="lieux plus proche Form">
+                    <sheet>
+                        <group>
+                            <field name="name_lieu"/>
+                            <field name="type_lieu"/>
+                            <field name="distance"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+          <record model="ir.ui.view" id="lieu_tree_view">
+            <field name="name">Lieu proche</field>
+            <field name="model">lb.lieu</field>
+            <field name="arch" type="xml">
+                <tree string="lieux plus proche Tree">
+                     <field name="name_lieu"/>
+                    <field name="type_lieu"/>
+                    <field name="distance"/>
+                </tree>
+            </field>
+        </record>
+
+    
+    
+
+        <!--sous_propriété-->
+        <record model="ir.ui.view" id="type_form_view">
+            <field name="name">Sous propriété</field>
+            <field name="model">lb.sous_propriete</field>
+            <field name="arch" type="xml">
+                <form string="Détail piéces">
+                    <sheet>
+                        <group>
+                             <field name="type_piece"/>
+                             <field name="height"/>
+                             <field name="width"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="composant_tree_view">
+            <field name="name">Sous propriétés</field>
+            <field name="model">lb.sous_propriete</field>
+            <field name="arch" type="xml">
+                <tree string="Sous propriétés">
+                    <field name="type_piece"/>
+                    <field name="height"/>
+                    <field name="width"/>
+                </tree>
+            </field>
+        </record>
+
+     
+
+
+
+        <!--Plans , photos et documents-->
+         <!--form plan-->
+        <record model="ir.ui.view" id="plan_form_view">
+            <field name="name">Plan</field>
+            <field name="model">lb.plan_etage</field>
+            <field name="arch" type="xml">
+                <form string=" Plan Etage">
+                    <sheet>
+                        <group>
+                            <field name="description_plan"/>
+                            <field name="photos_plan"  widget="image"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="plan_tree_view">
+            <field name="name">Plans</field>
+            <field name="model">lb.plan_etage</field>
+            <field name="arch" type="xml">
+                <tree string="PLan Etage liste">
+                    <field name="description_plan"/>
+                    <field name="photos_plan"/>
+                </tree>
+            </field>
+        </record>
+
+          <!--photos-->
+        <record model="ir.ui.view" id="photo_form_view">
+            <field name="name">Photos</field>
+            <field name="model">lb.photos</field>
+            <field name="arch" type="xml">
+                <form string="Photos du bien">
+                    <sheet>
+                        <group>
+                             <field name="description"/>
+                             <field name="photos"  widget="image"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="photos_tree_view">
+            <field name="name">Photos</field>
+            <field name="model">lb.photos</field>
+            <field name="arch" type="xml">
+                <tree string="photos">
+                    <field name="description"/>
+                    <field name="photos"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--document-->
+        <record model="ir.ui.view" id="document_form_view">
+            <field name="name">Document</field>
+            <field name="model">lb.documents</field>
+            <field name="arch" type="xml">
+                <form string="Documents du bien">
+                    <sheet>
+                        <group>
+                             <field name="description"/>
+                             <field name="date_expiration"/>
+                            <field name="fichier"></field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="document_tree_view">
+            <field name="name">Documents</field>
+            <field name="model">lb.documents</field>
+            <field name="arch" type="xml">
+                <tree string="documents">
+                    <field name="description"/>
+                    <field name="date_expiration"/>
+                    <field name="fichier"></field>
+                </tree>
+            </field>
+        </record>
+        
+        
+        <!--
+        <record model="ir.ui.view" id="projet_form_view">
+            <field name="name">projets</field>
+            <field name="model">lb.projet</field>
+            <field name="arch" type="xml">
+                <form string="Projet Form">
+                    <sheet>
+                        <group>
+                            <field name="nom_projet"/>
+                        </group>
+                           <notebook>
+                            <page string="Biens">
+                              
+							</page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        -->
+    </data>
+</odoo>

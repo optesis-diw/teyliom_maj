@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_layout" name="Portal layout: leave menu entry" inherit_id="portal.portal_breadcrumbs" priority="44">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'leave' or leave" t-attf-class="breadcrumb-item #{'active ' if not leave else ''}">
+                <a t-if="leave" t-attf-href="/my/leaves?{{ keep_query() }}">leaves</a>
+                <t t-else="">Leaves</t>
+            </li>
+            <li t-if="leave" class="breadcrumb-item active">
+                <t t-esc="leave.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home" name="Portal My Home: leave entries" inherit_id="portal.portal_my_home" priority="100">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Leaves</t>
+                <t t-set="url" t-value="'/my/leaves'"/>
+                <t t-set="count" t-value="leave_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_leaves" name="My leaves">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">leaves</t>
+                <li><a href="/leave/create" class="btn btn-primary">Create Leave Request</a></li>
+            </t>
+            <t t-if="not leaves">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no leaves.
+                </div>
+            </t>
+            <t t-if="leaves" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Title</th>
+                        <th>Employee</th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Halfday</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="leaves" t-as="leave">
+                        <td class="text-left">
+                            <t t-if="leave.state == 'confirm'"><a t-attf-href="/leave/editable/#{leave.id}?{{ keep_query() }}"><span t-field="leave.name"/></a></t>
+                            <t t-if="leave.state != 'confirm'"><a t-attf-href="/leave/readonly/#{leave.id}?{{ keep_query() }}"><span t-field="leave.name"/></a></t>
+                        </td>
+                        <td class="text-left">
+                            <t t-esc="leave.employee_id.name"/>
+                        </td>
+                        <td class="text-left">
+                            <t t-esc="leave.holiday_status_id.name"/>
+                        </td>
+                        <td class="text-left">
+                            <t t-esc="leave.request_date_from" />
+                        </td>
+                        <td class="text-left">
+                            <t t-esc="leave.request_date_to" />
+                        </td>
+                        <td class="text-left">
+                            <t t-if="leave.request_unit_half"><span class="badge badge-pill badge-info">Yes</span></t>
+                        </td>
+                        <td class="text-center">
+                            <t t-if="leave.state == 'draft'"><span class="badge badge-pill badge-info">To Submit</span></t>
+                            <t t-if="leave.state == 'cancel'"><span class="badge badge-pill badge-warning">Cancelled</span></t>
+                            <t t-if="leave.state == 'confirm'"><span class="badge badge-pill badge-info">To Approve</span></t>
+                            <t t-if="leave.state == 'refuse'"><span class="badge badge-pill badge-danger">Refused</span></t>
+                            <t t-if="leave.state == 'validate1'"><span class="badge badge-pill badge-info">Second Approval</span></t>
+                            <t t-if="leave.state == 'validate'"><span class="badge badge-pill badge-success">Approved</span></t>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+        <template id="registration_leave">
+            <t t-call="portal.portal_layout">
+                <div>
+                <tbody>
+                    <h3 class="text-center">Leave Request Form</h3>
+                    <form id="leave_registration_form" t-attf-action="/leave/register" method="post" class="panel panel-default">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <t t-if="overlaps"><p style="color:red;" >You can not have 2 leaves that overlaps on the same day.</p></t>
+                        <t t-if="sufficient"><p style="color:red;"><t t-esc="e"/>The number of remaining leaves is not sufficient for this leave type.
+                                        'Please also check the leaves waiting for validation.</p></t>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="name">Title</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="name" required="1"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="date_start">Leave Type</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="state_id" class="form-control state_id"  required="required">
+                                    <option> </option>
+                                    <t t-foreach="leave_types or []" t-as="leave_type">
+                                        <option t-att-value="leave_type.id">
+                                            <t t-esc="leave_type.name" t-att-selected="country.id == opportunity.country_id.id"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="halfday_checkbox">Half Day</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="checkbox" style="width:7%;" class="form-control o_website_form_input" id="halfday_checkbox" name="halfday" />
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_from">Start Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" name="request_date_from" required="1"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="hide_field_if_halfday">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_to">End Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" name="request_date_to"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="date_request_from_period">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="period">Period</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="period" class="form-control">
+                                    <option>Morning</option>
+                                    <option>Afternoon</option>
+                                </select>
+                            </div>
+                        </div>
+                        <t t-call-assets="web.assets_common" t-css="false"/>
+                        <script type="text/javascript">
+                            odoo.define('portal_leave.registration_leave', function(require) {
+                                var checkbox = $("#halfday_checkbox");
+                                var period = $("#date_request_from_period");
+                                var hidden = $("#hide_field_if_halfday");
+                                hidden.show();
+                                period.hide();
+                                checkbox.change(function() {
+                                    if (checkbox.is(':checked')) {
+                                      hidden.hide();
+                                      period.show();
+                                    } else {
+                                      hidden.show();
+                                      period.hide();
+                                    }
+                                  });
+                            });
+                        </script>
+                        <footer class="modal-footer">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-primary">Request</button>
+                            </div>
+                        </footer>
+                    </form>
+                </tbody>
+                </div>
+            </t>
+        </template>
+
+        <template id="edit_leave">
+            <t t-call="portal.portal_layout">
+                <div>
+                    <form id="leave_delete_form" t-attf-action="/leave/delete" method="post" class="panel panel-default">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="leave_id" t-att-value="leave.id"/>
+                        <footer class="modal-footer">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-primary" style="background-color: #ff2300;border-color: #ff2f00;">Delete</button>
+                            </div>
+                        </footer>
+                    </form>
+                    <form id="leave_registration_form" t-attf-action="/leave/edit" method="post" class="panel panel-default">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="leave_id" t-att-value="leave.id"/>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="name">Title</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="name" t-att-value="leave.name" required="1"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="date_start">Leave Type</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="state_id" t-att-value="leave.holiday_status_id" class="form-control">
+                                    <option>Leave Type...</option>
+                                    <t t-foreach="leave_types or []" t-as="leave_type">
+                                        <option t-att-value="leave_type.id" t-att-selected="leave_type.id == leave.holiday_status_id.id">
+                                            <t t-esc="leave_type.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="halfday_checkbox">Half Day</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="checkbox" style="width:7%;" t-att-checked="leave.request_unit_half" class="form-control o_website_form_input" id="halfday_checkbox" name="halfday"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_from">Start Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" name="request_date_from" t-att-value="leave.request_date_from" required="1"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="hide_field_if_halfday">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_to">End Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" t-att-value="leave.request_date_to" name="request_date_to"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="date_request_from_period">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="period">Period</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="period" class="form-control">
+                                    <option value="am" t-att-selected="leave.request_date_from_period == 'am'">am</option>
+                                    <option value="pm" t-att-selected="leave.request_date_from_period == 'pm'">pm</option>
+                                </select>
+                            </div>
+                        </div>
+                        <t t-call-assets="web.assets_common" t-css="false"/>
+                        <script type="text/javascript">
+                            odoo.define('portal_leave.registration_leave', function(require) {
+                                var checkbox = $("#halfday_checkbox");
+                                var period = $("#date_request_from_period");
+                                var hidden = $("#hide_field_if_halfday");
+                                hidden.show();
+                                period.hide();
+                                if (checkbox.is(':checked')) {
+                                     hidden.hide();
+                                     period.show();
+                                }
+                                checkbox.change(function() {
+                                    if (checkbox.is(':checked')) {
+                                      hidden.hide();
+                                      period.show();
+                                    } else {
+                                      hidden.show();
+                                      period.hide();
+                                    }
+                                  });
+                            });
+                        </script>
+                        <footer class="modal-footer">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-primary">Change</button>
+                            </div>
+                        </footer>
+                    </form>
+                </div>
+            </t>
+        </template>
+
+        <template id="view_leave">
+            <t t-call="portal.portal_layout">
+                <div>
+                    <form id="leave_registration_form" t-attf-action="/leave/edit" method="post" class="panel panel-default">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="leave_id" t-att-value="leave.id"/>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="name">Title</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="name" t-att-value="leave.name" readonly="1"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="date_start">Leave Type</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="text" class="form-control o_website_form_input" name="state_id" t-att-value="leave.holiday_status_id.name" readonly="1"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="halfday_checkbox">Half Day</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="checkbox" style="width:7%;" t-att-checked="leave.request_unit_half" disabled="1" class="form-control o_website_form_input" id="halfday_checkbox" readonly="1" name="halfday"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_from">Start Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" name="request_date_from" t-att-value="leave.request_date_from" readonly="1"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="hide_field_if_halfday">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="request_date_to">End Date</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <input type="date" class="form-control o_website_form_input o_datepicker_input" t-att-value="leave.request_date_to" name="request_date_to" readonly="1"/>
+                                <span class="o_datepicker_button"/>
+                            </div>
+                        </div>
+                        <div class="form-group row form-field o_website_form_required" id="date_request_from_period">
+                            <div class="col-lg-3 col-md-4 text-right">
+                                <label class="col-form-label" for="period">Period</label>
+                            </div>
+                            <div class="col-lg-7 col-md-8">
+                                <select name="period" class="form-control"  disabled="1">
+                                    <option></option>
+                                    <option t-att-selected="leave.request_date_from_period == 'am'" value="am">am</option>
+                                    <option t-att-selected="leave.request_date_from_period == 'pm'" value="am">pm</option>
+                                </select>
+                            </div>
+                        </div>
+                        <t t-call-assets="web.assets_common" t-css="false"/>
+                        <script type="text/javascript">
+                            odoo.define('portal_leave.registration_leave', function(require) {
+                                var checkbox = $("#halfday_checkbox");
+                                var period = $("#date_request_from_period");
+                                var hidden = $("#hide_field_if_halfday");
+                                hidden.show();
+                                period.hide();
+                                if (checkbox.is(':checked')) {
+                                     hidden.hide();
+                                     period.show();
+                                }
+                                checkbox.change(function() {
+                                    if (checkbox.is(':checked')) {
+                                      hidden.hide();
+                                      period.show();
+                                    } else {
+                                      hidden.show();
+                                      period.hide();
+                                    }
+                                  });
+                            });
+                        </script>
+                    </form>
+                </div>
+            </t>
+        </template>
+
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+      
+      
+        <record id="crm_immo_update" model="ir.ui.view">
+               <field name="name">crm.lead.inherit</field>
+              <field name="model">crm.lead</field>
+              <field name="inherit_id" ref="crm.crm_lead_view_form"/> 
+              <field name="arch" type="xml">
+               
+                
+            <xpath expr="//field[@name='montant_verse']"  position="after">
+            <field name="ilot_ids"/>
+            </xpath>
+                  
+                  
+          <xpath expr="//field[@name='ilot_ids']"  position="after">
+            <field name="phase_ids"/>
+        </xpath>
+          
+                   <xpath expr="//field[@name='phase_ids']"  position="after">
+            <field name="superficie"/>
+        </xpath>
+
+                  
+              </field>
+            </record>
+      
+      
+      
+      
+    </data>
+</odoo>    
+
+        

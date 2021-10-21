@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<odoo>
+    <record model="ir.ui.view" id="hr_leave_project_manager_view_inherit_custom">
+        <field name="name">hr.leave.from.inherit.project.manager</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[hasclass('oe_title')]" position="before">
+                <div class="alert alert-info" attrs="{'invisible': [('is_custom_warn_massage','=',False)]}"  role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
+                    <h3 style="text-align: center;"><strong>Project Manager/Department Head Approval Required.</strong></h3>
+                </div>
+            </xpath>
+            <xpath expr="//sheet/group" position="inside">
+                <group>
+                    <field name="custom_is_project_manager_approval" invisible="1"/>
+                    <field name="custom_project_manager_approver_id"  invisible="1"/>
+                    <field name="is_custom_warn_massage" invisible="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//button[@name='action_approve']" position="before">
+                <button string="Project Manager Approve" 
+                        name="action_custom_project_manager_approve" 
+                        type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('is_custom_warn_massage','=',False)]}"
+                        />
+            </xpath>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_hr_holidays_filter_inherit_project_manager_custom">
+        <field name="name">hr.leave.filter.inherit.project.manager</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.view_hr_holidays_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/filter[@name='approve']" position="before">
+                <filter domain="[('custom_is_project_manager_approval','=',False)]" string="To Approve(PM/DH)" name="project_manager_approve"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

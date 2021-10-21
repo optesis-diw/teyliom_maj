@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<odoo>
+    
+    <record model="ir.ui.view" id="hr_leave_type_project_manager_view_inherit_custom">
+        <field name="name">hr.leave.type.inherit.project.manager</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='validation_type']" position="after">
+                <group>
+                    <field name="custom_project_manager_approval_needed" attrs="{'invisible': [('validation_type','=', 'no_validation')]}"/>
+                </group> 
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>

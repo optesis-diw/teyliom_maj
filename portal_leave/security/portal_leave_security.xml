@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<odoo>
+        <record id="apply_leave_portal_rule_1" model="ir.rule">
+            <field name="name">Portal User Leave Permmission</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="apply_leave_portal_rule_2" model="ir.rule">
+            <field name="name">Portal User Leave Type Permmission</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave_type"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+</odoo>

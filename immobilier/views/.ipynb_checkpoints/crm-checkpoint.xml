@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+      
+      
+             <record id="crm_lead_view_calendar_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.view.calendar</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_calendar_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                  <field name="bien" avatar_field="image_128"/>
+                 <field name="etat_filter"/>
+               </xpath>  
+                
+                 
+                
+            </field>
+        </record>
+      
+      
+      <record id="crm_lead_view_graph_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.view.graph</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_graph"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='stage_id']" position="replace">
+                 <field name="etat_filter" type="col"/>
+               </xpath>  
+                
+                 <xpath expr="//field[@name='user_id']" position="replace">
+                 <field name="bien" type="row"/>
+               </xpath>
+                
+            </field>
+        </record>
+      
+      
+      
+      <record id="crm_lead_view_dashboard_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.view.graph_dashbord</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm_enterprise.crm_opportunity_view_graph"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='stage_id']" position="replace">
+                 <field name="etat_filter" type="row"/>
+               </xpath>  
+                
+               
+            </field>
+        </record>
+      
+      
+      
+      
+        <record id="inherit_search_crm_load" model="ir.ui.view">
+      <field name="name">crm.search.inherited</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='inactive']" position="after">
+                     <filter string="Etat Opportunité disponible" name="etat_dispo" domain="[('etat_filter', '=', 'dispo')]"/>
+                </xpath>
+                
+                 <xpath expr="//filter[@name='etat_dispo']" position="after">
+                     <filter string="Etat Opportunité option" name="etat_option" domain="[('etat_filter', '=', 'option')]"/>
+                </xpath>
+                
+                <xpath expr="//filter[@name='etat_option']" position="after">
+                     <filter string="Etat Opportunité Réservé" name="etat_reserve" domain="[('etat_filter', '=', 'reserve')]"/>
+                </xpath>
+                
+                <xpath expr="//filter[@name='etat_reserve']" position="after">
+                     <filter string="Etat Opportunité sans bien" name="etat_pas_bien" domain="[('etat_filter', '=', 'pas_bien')]"/>
+                </xpath>
+                
+                <xpath expr="//filter[@name='etat_pas_bien']" position="after">
+                        <filter string="Type de bien " name="type_bien_group" context="{'group_by':'type_bien'}"/>
+                   </xpath>   
+                
+                <xpath expr="//filter[@name='medium']" position="attributes">
+                   <attribute name="invisible">True</attribute>
+                </xpath>   
+                
+                <xpath expr="//filter[@name='medium']" position="after">
+                    <filter string="Moyen" name="origine_id" context="{'group_by':'origine_id'}"/>
+                </xpath>   
+                
+                
+            </field>
+        </record>
+      
+        
+    <data noupdate="1">
+        <record id="mail_send_every_day" model="ir.cron">
+            <field name="name">Mail Send 10d pour banque et 48h pr les autre</field>
+            <field name="active" eval="True" />
+            <field name="user_id" ref="base.user_admin" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field name="model_id" eval="ref('model_crm_lead')" />
+            <field name="state">code</field>
+            <field name="code">model.with_context(from_cron1=True)._set_end_date()</field>
+        </record>
+    </data>
+      
+      
+       <data noupdate="1">
+        <record id="mail_send_every_day_5d" model="ir.cron">
+            <field name="name">Mail Send 5d pour dossier financement_bancaire </field>
+            <field name="active" eval="True" />
+            <field name="user_id" ref="base.user_admin" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field name="model_id" eval="ref('model_crm_lead')" />
+            <field name="state">code</field>
+            <field name="code">model.with_context(from_cron1=True)._set_end_date_5day()</field>
+        </record>
+    </data>   
+      
+      
+      
+     <record id="crm_lead_view_pivot_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.view.pivot</field>
+            <field name="model">crm.lead</field>
+             <field name="inherit_id" ref="crm.crm_lead_view_pivot"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='planned_revenue']" position="replace">
+                 <field name="planned_revenue" type="col"/>
+               </xpath>  
+                
+                 <xpath expr="//field[@name='planned_revenue']" position="after">
+                 <field name="bien" type="col"/>
+                 <field name="partner_id" type="col"/>
+                 <field name="etat_filter" type="col"/>
+               </xpath>
+                
+           
+                
+            </field>
+        </record>
+      
+     
+    
+      
+   <!--
+    <Record id="action_send_mail_on_partner_creation" model="ir.actions.server">
+       <field name="name"> Automatic Email Send action </field>
+       <field name="model_id" ref="crm.model_crm_lead"/>
+       <field name="type">ir.actions.server</field>
+       <field name="state">code</field>
+       <field name="code">self.auto_mail_send()</field>
+    </Record>
+-->
+      
+       <record id="crm_form" model="ir.ui.view">
+      <field name="name">crm.lead.form.create</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+      <field name="arch" type="xml">
+          
+        
+          <!--
+           <xpath expr="//field[@name='partner_id']" position="attributes">
+             <attribute name="domain" >[('client','=',True)]</attribute>
+          </xpath>
+           -->
+       
+          
+      <!--  <xpath expr="//notebook//page[@name='lead']//group//field[@name='medium_id']" position="replace">
+          <field name="medium_id"/>
+        </xpath> -->
+          
+
+           <xpath expr="//field[@name='partner_id']" position="attributes">
+              <attribute name="required">True</attribute>
+          </xpath>
+          
+       
+          <field name="partner_id" position="attributes">
+           <!--<attribute name="context">{'default_source_id': source_id, 'default_origine_id': origine_id}</attribute>-->
+               <attribute name="context">{'default_origine_id': origine_id}</attribute>
+        </field>
+          
+          
+         <xpath expr="//field[@name='phone']" position="after">
+          <field name="nom_projet_ids"/>
+        </xpath> 
+          
+           <xpath expr="//field[@name='nom_projet_ids']"  position="after">
+              
+            <field name="bien" options="{'no_open': True, 'no_create_edit': True, 'no_create': True}"/>  
+        </xpath>
+        
+        <xpath expr="//field[@name='bien']" position="after">
+            <field name="type_bien"/>
+        </xpath>
+      
+
+        <xpath expr="//field[@name='type_bien']" position="after">
+            <field name="prix_vente"/>
+        </xpath>
+
+         <xpath expr="//field[@name='prix_vente']"  position="after">
+            <field name="apport_min"/>
+        </xpath>
+        
+         <xpath expr="//field[@name='apport_min']"  position="after">
+             <field name="apport_verse" attrs="{'readonly':[('etat','=','dispo')]}"/>
+              <field name="etat" attrs="{'invisible': [('etat','!=','dispo')]}" style="color: #FFFFFF; background-color: #00A09D"/> 
+            <field name="etat" attrs="{'invisible': [('etat','!=','reserve')]}" style="color: #FFFFFF; background-color: #DC6965"/> 
+            <!--<field name="etat" attrs="{'invisible': [('etat','!=','option')]}" style="color: #FFFFFF; background-color: #ffc107"/>-->
+            <field name="remise"/>
+             <field name="contrat_id"/>
+        </xpath>
+          
+     
+           
+          <xpath expr="//field[@name='remise']"  position="after">
+            <field name="montant_verse"/>
+        </xpath>
+          
+          <xpath expr="//field[@name='remise']"  position="before">
+            <field name="etat" attrs="{'invisible': [('etat','!=','option')]}" style="color: #FFFFFF; background-color: #ffc107"/>
+        </xpath>
+          
+          
+          
+          <xpath expr="//field[@name='tag_ids']"  position="after">
+              <field name="etat_du_bien"/>
+             <field name="date_livraison"/> 
+             <field name="date_entree"/>
+              <field name="dateoftoday"/>
+              <field name="date_depot"/>
+              <field name="date_reservation"/>
+              <field name="dateoftoday1" invisible="1"/> 
+              <field name="mode_financement"/>
+               <field name="nom_banque_id" attrs="{'invisible': [('mode_financement','!=', 'financement_bancaire')]}"/>
+              <br/>
+              <field name="date_expiration" readonly="1" />
+               <field name="active_r" invisible="1"/>
+              <field name="active_l" invisible="1"/>
+              <field name="vrai" invisible="1"/>
+              
+              <field name="date_mail" invisible="1"/>
+              <field name="date_mail_5d" invisible="1"/>
+              <field name='due_reminder_date' invisible="1"/>
+              <field name="email_company" invisible="1"/>
+              <field name="etat_filter" attrs="{'invisible': ['|',('etat_filter','!=','dispo'), ('etat_filter','==','dispo')]}"/>
+              <field name="etat_depend_etat" invisible="1"/>
+              
+          
+             <!-- <button name="do_clear_done" type="object" string="Toggle Done" class="oe_highlight" />-->
+        </xpath>
+          
+           
+          
+          
+          
+         
+
+         <xpath expr="//field[@name='planned_revenue']"  position="replace">
+            <field name="planned_revenue"/>
+        </xpath>
+          
+             <xpath expr="//page[@name='lead']" position="after" >
+                 <page string="Source Marketing">
+                    <group>
+                         <field name="origine_id" editable="1"/>
+                        <!-- <field name="source_id" editable="1"/> -->
+                     </group>    
+                 </page>
+                 
+                 <page string="Informations Apporteurs ">
+                    <group>
+                         <field name="apporteur"/>
+                         <field name="mobile_apporteur"/> 
+                         <field name="adresse_apporteur"/>
+                         <field name="email_apporteur"/>
+                     </group>   
+                     <group>
+                         <field name="nature_apporteur"/>
+                         <field name="taux_apporteur"/> 
+                     </group>
+                 </page>
+                 
+                 <page string="Informations Coopératives">
+                    <group>
+                        
+                          <field name="nom_cooperative"/>
+                         <field name="taux_cooperative"/> 
+                     </group>    
+                 </page>
+                 
+            </xpath>    
+
+      </field>
+    </record>     
+      
+      
+      
+       <!--kanban/crm heritage-->
+        <record id="crm_lead_kanban" model="ir.ui.view">
+      <field name="name">crm.lead.kanban</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+              <xpath expr="//div[@class='oe_kanban_content']" position="inside">
+                <div>
+                         <ul>
+                            <div attrs="{'invisible': [('etat_du_bien','!=','dispo')]}" 
+                                style="color: #FFFFFF; background-color: #00A09D; border-color:   #00A09D; width: 80px"><field name="etat_du_bien"/>
+                            </div>
+                            <div attrs="{'invisible': [('etat_du_bien','!=','reserve')]}" 
+                                    style="color: #FFFFFF; background-color: #DC6965; border-color: #DC6965; width: 80px"><field name="etat_du_bien"/>
+                            </div>
+                            <div attrs="{'invisible': [('etat_du_bien','!=','option')]}"
+                                    style="color: #FFFFFF; background-color: #ffc107 ; border-color: #ffc107; width: 80px"><field name="etat_du_bien"/>
+                            </div>
+
+                        </ul>
+                    </div>
+              </xpath>   
+            </field>
+        </record>
+      
+ 
+      
+    </data>
+</odoo>    
