@@ -59,12 +59,8 @@ class crm(models.Model):
     ], string='', default="dispo", related='bien.etat_depend_etat', readonly=False)
 
     
-   #partner_id = fields.Many2one('res.partner', string='Customer', tracking=10, index=True,
-        #domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", context="{'default_source_id': source_id, 'default_origine_id': origine_id}")
-    
     partner_id = fields.Many2one('res.partner', string='Customer', tracking=10, index=True,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", context="{'default_origine_id': origine_id}")
-    
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", context="{'default_source_id': source_id, 'default_origine_id': origine_id}")
     
     active_l = fields.Boolean()
 
@@ -225,7 +221,7 @@ class crm(models.Model):
     contrat_id = fields.Many2one('lb.contrat', string="Type de contrat")
     
     origine_id = fields.Many2one('lb.origine', string="Moyen", related='partner_id.origine_id' , readonly=False, store="True")
-    #source_id = fields.Many2one('lb.source', string="Source", related='partner_id.source_id', readonly=False, store="True")
+    source_id = fields.Many2one('lb.source', string="Source", related='partner_id.source_id', readonly=False, store="True")
     
    
    

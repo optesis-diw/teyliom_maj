@@ -11,7 +11,6 @@ class Article(models.Model):
     _inherit = 'product.template'
     
     
-   
     avenants = fields.Float(string="Avenant", store=True ,write=['immobilier.library_group_user_new'])
     prix_maj = fields.Float(string="Prix MAJ", compute='get_prix_maj')
 
@@ -22,6 +21,7 @@ class Article(models.Model):
         for r in self:
             r.prix_maj = r.list_price + r.avenants   
             
+    
    
     etat_bien_domain = fields.Selection([
         ('dispo', 'Disponible'),
