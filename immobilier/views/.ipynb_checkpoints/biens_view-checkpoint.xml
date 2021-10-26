@@ -104,12 +104,7 @@
             <attribute name="attrs">{'readonly':['|',('etat','!=','dispo')]}</attribute>
           </xpath>
           
-           <xpath expr="//field[@name='company_id']" position="before">
-                <field name="avenants"/>
-                <field name="prix_maj"/>
-                <field name="user_connect"/>
-          </xpath>
-        
+         
           
         
           

@@ -182,7 +182,7 @@
           
        
           <field name="partner_id" position="attributes">
-           <!--<attribute name="context">{'default_source_id': source_id, 'default_origine_id': origine_id}</attribute>-->
+           <attribute name="context">{'default_source_id': source_id, 'default_origine_id': origine_id}</attribute>
                <attribute name="context">{'default_origine_id': origine_id}</attribute>
         </field>
           
@@ -271,7 +271,7 @@
                  <page string="Source Marketing">
                     <group>
                          <field name="origine_id" editable="1"/>
-                        <!-- <field name="source_id" editable="1"/> -->
+                         <field name="source_id" editable="1"/> 
                      </group>    
                  </page>
                  

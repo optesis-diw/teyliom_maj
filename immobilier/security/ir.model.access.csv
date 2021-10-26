@@ -21,7 +21,7 @@ access_sale_immo_user_profession,immo.user_profession,model_immo_user_profession
 access_sale_lb_contrat,lb.contrat,model_lb_contrat,library_group_user_new,1,0,0,0
 
 
-
+access_sale_lb_banque,lb.banque,model_lb_banque,library_group_user_new,1,0,0,0
 
 
 access_product_template_salesman,product.template.salesman,product.model_product_template,library_group_user_new,1,0,0,0
@@ -32,6 +32,7 @@ access_product_product_salesman,product.product.salesman,product.model_product_p
 
 
 
+access_sale_lb_banque,lb.banque,model_lb_banque,library_group_manager_new,1,1,1,1
 
 
 manager_access_lb_quartier,lb.quartier,model_lb_quartier,library_group_manager_new,1,1,1,1
