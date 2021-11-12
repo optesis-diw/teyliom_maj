@@ -3,7 +3,7 @@
 from lxml import etree
 
 from odoo import api, fields, models, tools, SUPERUSER_ID, _
-
+from odoo.exceptions import ValidationError
 
 
 class modele_acticle(models.Model):
@@ -13,7 +13,7 @@ class modele_acticle(models.Model):
     
     ilot_ids = fields.Many2one('lb.ilot', string="Ilot")
     phase_ids = fields.Many2one('lb.phase', string="Phase")
-    
+  
     
     
 
@@ -24,6 +24,16 @@ class modele_ilot(models.Model):
     _rec_name = 'name_ilot'
 
     name_ilot = fields.Char('Ilot')
+    status_ilot = fields.Selection([
+        ('ouvert', 'Disponible à la vente'),
+        ('ferme', 'Fermé'),
+    ], string='status du ilot')
+    
+   
+  
+    date_debut = fields.Date('Date de début') 
+    date_fin = fields.Date('Date de fin')
+    
 
 
 class modele_phase(models.Model):

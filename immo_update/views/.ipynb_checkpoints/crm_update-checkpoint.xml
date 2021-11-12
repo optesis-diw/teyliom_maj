@@ -12,6 +12,10 @@
                 
             <xpath expr="//field[@name='montant_verse']"  position="after">
             <field name="ilot_ids"/>
+            <field name="status_ilot"/>
+            <field name="active_ferme" invisible="1"/>
+                <field name="date_debut_crm" invisible="1"/>
+                <field name="date_fin_crm" invisible="1"/>
             </xpath>
                   
                   

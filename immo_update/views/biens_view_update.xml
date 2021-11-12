@@ -35,7 +35,7 @@
             </record>
         
         
-          <record model="ir.ui.view" id="ilot_form_view">
+          <record model="ir.ui.view" id="ilot_form_view_new">
             <field name="name">Ilot</field>
             <field name="model">lb.ilot</field>
             <field name="arch" type="xml">
@@ -44,6 +44,17 @@
                       <group>
                                     <group>
                                         <field name="name_ilot"/>
+                                    </group>
+                                    <group>
+                                        <field name="status_ilot"/>
+                                    </group>
+                      </group>
+                        <group>
+                                    <group>
+                                        <field name="date_debut"/>
+                                    </group>
+                                    <group>
+                                        <field name="date_fin"/>
                                     </group>
                       </group>
                     </sheet>
